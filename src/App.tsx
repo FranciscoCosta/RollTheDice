@@ -4,9 +4,11 @@ import {
   Text,
   View,
   ImageSourcePropType,
+  Vibration,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 import {PropsWithChildren, useState} from 'react';
 import {
@@ -18,7 +20,12 @@ import {
   diceSix,
 } from '../assets/index';
 
-const Dice = ({imageUrl}: DiceProps): JsxElment => {
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
+
+const Dice = ({imageUrl}: DiceProps): JSX.Element => {
   return (
     <View>
       <Image style={styles.diceImage} source={imageUrl} />
@@ -60,7 +67,12 @@ export default function App(): JSX.Element {
   return (
     <View style={styles.container}>
       <Dice imageUrl={randomDice} />
-      <TouchableOpacity style={styles.btnDice} onPress={() => randomDiceC()}>
+      <TouchableOpacity
+        style={styles.btnDice}
+        onPress={() => {
+          randomDiceC();
+          Vibration.vibrate(250);
+        }}>
         <Text style={styles.diceText}>Lançar dado</Text>
       </TouchableOpacity>
     </View>
